@@ -1,20 +1,26 @@
 #include <iostream>
 #include <windows.h>
 
-class triangle {
+class figure {
 protected:
 
+	int sides;
 	int a;
 	int b;
 	int c;
+	int d;
 	int A;
 	int B;
 	int C;
+	int D;
 	std::string name;
-public:
 
-	triangle(int a, int b, int c, int  A, int B, int C) {
-	this->a = a; this->b = b; this->c = c; this->A = A; this->B = B; this->C = C;  name = "Треугольник: "; }
+	int get_sides() {
+		return sides;
+	}
+	std::string get_name() {
+		return name;
+	}
 
 	int get_a() {
 		return a;
@@ -25,6 +31,9 @@ public:
 	int get_c() {
 		return c;
 	}
+	int get_d() {
+		return d;
+	}
 	int get_A() {
 		return A;
 	}
@@ -34,24 +43,44 @@ public:
 	int get_C() {
 		return C;
 	}
-	std::string get_name() {
-		return name;
+	int get_D() {
+		return D;
 	}
+
+public:
+
+	figure() { sides = 0; name = "Фигура: "; }
+
+	virtual void print_info() {
+		std::cout << get_name() << std::endl;
+		std::cout << "Стороны: " << get_a() << " " << get_b() << " " << get_c() << " " << get_d() << std::endl;
+		std::cout << "Углы: " << get_A() << " " << get_B() << " " <<  get_C() << " " <<  get_D() << std::endl;
+		std::cout << std::endl;
+
+	};
+
 };
 
 
-class quadrangle {
-protected:
+class triangle: public figure {
 
-	int a;
-	int b;
-	int c;
-	int d;
-	int A;
-	int B;
-	int C;
-	int D;
-	std::string name;
+public:
+
+	triangle(int a, int b, int c, int  A, int B, int C) {
+	this->a = a; this->b = b; this->c = c; this->A = A; this->B = B; this->C = C;  name = "Треугольник: "; }
+
+	void print_info() override {
+		std::cout << get_name() << std::endl;
+		std::cout << "Стороны: " << get_a() << " " << get_b() << " " << get_c()  << std::endl;
+		std::cout << "Углы: " << get_A() << " " << get_B() << " " << get_C() << std::endl;
+		std::cout << std::endl;
+	}
+
+};
+
+
+class quadrangle:public figure {
+
 public:
 
 	quadrangle(int a, int b, int c, int d, int  A, int B, int C, int D) {
@@ -88,69 +117,52 @@ public:
 
 class right_tri :public triangle {
 public:
-	right_tri(int a, int b, int c, int  A, int B) :triangle(a,b,c,A,B,C){
-	this->a = a; this->b = b; this->c = c; this->A = A; this->B = B; this->C = 90;  name = "Прямоугольный треугольник: ";
+	right_tri(int a, int b, int c, int  A, int B) :triangle(a,b,c,A,B,90){
+	this->a = a; this->b = b; this->c = c; this->A = A; this->B = B;  name = "Прямоугольный треугольник: ";
 	}
 };
 
 class isos_tri :public triangle {
 public:
-isos_tri(int a, int b, int  A, int B) :triangle(a, b, c, A, B, C) {
-		this->a = this->c=a; this->b = b; this->A =this->C= A; this->B = B;  name = "Равнобедренный треугольник: ";
+isos_tri(int a, int b, int  A, int B) :triangle(a, b, a, A, B, A) {
+		this->a = a; this->b = b; this->A =A; this->B = B;  name = "Равнобедренный треугольник: ";
 	}
 };
 
 class equil_tri :public triangle {
 public:
-	equil_tri(int a) :triangle(a, b, c, A, B, C) {
-		this->a = this->b =this->c = a; this->A = this->C = this->B = 60;  name = "Равносторонний треугольник: ";
+	equil_tri(int a) :triangle(a, a, a, 60, 60, 60) {
+		this->a =  a;  name = "Равносторонний треугольник: ";
 	}
 };
 
 class rectangle :public quadrangle {
 public:
-	rectangle(int a,int b) :quadrangle(a, b, c,d, A, B, C,D) {
-		this->a = this->c = a; this->b = this->d=b; this->A = this->C = this->B = this->D=90;  name = "Прямоугольник: ";
+	rectangle(int a,int b) :quadrangle(a, b, a,b, 90, 90, 90, 90) {
+		this->a =  a; this->b = b;  name = "Прямоугольник: ";
 	}
 };
 
 class square :public quadrangle {
 public:
-	square(int a) :quadrangle(a, b, c, d, A, B, C, D) {
-		this->a = this->c =this->b = this->d = a; this->A = this->C = this->B = this->D = 90;  name = "Квадрат: ";
+	square(int a) :quadrangle(a, a, a, a, 90, 90, 90, 90) {
+		this->a =  a;   name = "Квадрат: ";
 	}
 };
 
 class parallelogram :public quadrangle {
 public:
-	parallelogram(int a, int b,int A,int B) :quadrangle(a, b, c, d, A, B, C, D) {
-		this->a = this->c = a; this->b = this->d = b; this->A = this->C = A; this->B = this->D = B;  name = "Параллелограмм: ";
+	parallelogram(int a, int b,int A,int B) :quadrangle(a, b, a, b, A, B, A, B) {
+		this->a = a; this->b = b; this->A =  A; this->B = B;  name = "Параллелограмм: ";
 	}
 };
 
 class rhomb :public quadrangle {
 public:
-	rhomb(int a, int A, int B) :quadrangle(a, b, c, d, A, B, C, D) {
-		this->a = this->c = this->b = this->d = a; this->A = this->C = A; this->B = this->D = B;  name = "Ромб: ";
+	rhomb(int a, int A, int B) :quadrangle(a, a, a, a, A, B, A, B) {
+		this->a = a; this->A = A; this->B =  B;  name = "Ромб: ";
 	}
 };
-
-
-
-
-
-void print_triangle(triangle print) {
-	std::cout << print.get_name()<<std::endl;
-	std::cout << "Стороны: " << print.get_a() << " " << print.get_b() << " " << print.get_c() << std::endl;
-	std::cout << "Углы: " << print.get_A() << " " << print.get_B() << " " << print.get_C() << std::endl;
-	std::cout << std::endl;
-}
-void print_quadrangle(quadrangle print) {
-	std::cout << print.get_name()<<std::endl;
-	std::cout <<"Стороны: "<< print.get_a() << " " << print.get_b() << " " << print.get_c() << " " << print.get_d()<<std::endl; 
-	std::cout << "Углы: "<<print.get_A() << " " << print.get_B() << " " << print.get_C() << " " << print.get_D() << std::endl;
-	std::cout << std::endl;
-}
 
 
 int main() {
@@ -167,19 +179,16 @@ int main() {
 	parallelogram eighth(75, 32, 56, 33);
 	rhomb ninth(40, 30, 120);
 
-
 	
-	std::cout << "Количество сторон:\n" << std::endl;
-	
-	print_triangle(first);
-	print_quadrangle(second);
-	print_triangle(third);
-	print_triangle(fourth);
-	print_triangle(fith);
-	print_quadrangle(sixth);
-	print_quadrangle(seventh);
-	print_quadrangle(eighth);
-	print_quadrangle(ninth);
+	first.print_info();
+	second.print_info();
+	third.print_info();
+	fourth.print_info();
+	fith.print_info();
+	sixth.print_info();
+	seventh.print_info();
+	eighth.print_info();
+	ninth.print_info();
 
 
 	return 0;
